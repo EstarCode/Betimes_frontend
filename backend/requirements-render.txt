@@ -1,0 +1,7 @@
+# Production requirements for Render deployment
+# Includes all base requirements plus PostgreSQL
+
+-r requirements.txt
+
+# PostgreSQL adapter (only for production/Render)
+psycopg2-binary==2.9.12

@@ -1,0 +1,67 @@
+# Core Django and REST Framework
+Django==4.2.9
+djangorestframework==3.14.0
+djangorestframework-simplejwt==5.3.1
+django-cors-headers==4.3.1
+django-environ==0.11.2
+django-extensions==3.2.3
+django-redis==5.4.0
+drf-yasg==1.21.8
+
+# Celery and Task Queue
+celery==5.3.4
+redis==5.0.1
+amqp==5.2.0
+billiard==4.2.0
+kombu==5.3.4
+vine==5.1.0
+
+# PDF Processing (Windows-compatible, no C++ compiler needed)
+PyMuPDF==1.27.2.3
+PyPDF2==3.0.1
+pdfplumber==0.10.3
+pypdf==3.17.4
+reportlab==4.5.0
+
+# Document Processing
+python-docx==1.1.0
+python-pptx==0.6.23
+openpyxl==3.1.2
+xlsxwriter==3.2.9
+
+# Image Processing
+Pillow==12.2.0
+img2pdf==0.6.3
+
+# Web Server
+gunicorn==21.2.0
+whitenoise==6.6.0
+uvicorn==0.46.0
+
+# Utilities
+python-dotenv==1.2.2
+python-slugify==8.0.1
+requests==2.31.0
+PyYAML==6.0.3
+python-dateutil==2.8.2
+pytz==2024.1
+tzdata==2026.2
+
+# Security and Authentication
+PyJWT==2.8.0
+cryptography==48.0.0
+
+# Monitoring
+sentry-sdk==1.39.2
+
+# Common dependencies
+certifi==2024.2.2
+charset-normalizer==3.3.2
+idna==3.6
+urllib3==2.1.0
+click==8.3.3
+colorama==0.4.6
+packaging==26.2
+six==1.16.0
+setuptools==82.0.1
+wheel==0.47.0
