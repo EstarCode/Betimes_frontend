@@ -32,12 +32,16 @@ urlpatterns = [
     path('api/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('api/redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     
-    # API Endpoints
-    path('api/auth/', include('apps.authentication.urls')),
-    path('api/compress/', include('apps.compression.urls')),
-    path('api/convert/', include('apps.conversion.urls')),
-    path('api/tools/', include('apps.pdf_tools.urls')),
-    path('api/analytics/', include('apps.analytics.urls')),
+    # API v1 Endpoints
+    path('api/v1/auth/', include('apps.authentication.urls')),
+    path('api/v1/', include('apps.uploads.urls')),  # Chunked uploads
+    path('api/v1/', include('apps.versions.urls')),  # Document version control
+    path('api/v1/workflows/', include('apps.workflows.urls')),  # Enterprise workflows
+    path('api/v1/dashboard/', include('apps.dashboard.urls')),  # Dashboard metrics
+    path('api/v1/compress/', include('apps.compression.urls')),  # PDF compression
+    path('api/v1/convert/', include('apps.conversion.urls')),  # Document conversion
+    path('api/v1/tools/', include('apps.pdf_tools.urls')),  # PDF tools
+    path('api/v1/analytics/', include('apps.analytics.urls')),  # Analytics
 ]
 
 # Serve media files in development

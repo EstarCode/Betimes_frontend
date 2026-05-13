@@ -42,12 +42,23 @@ INSTALLED_APPS = [
     'drf_yasg',
     'django_extensions',
     
-    # Local apps
+    # Local apps - Core
     'apps.authentication',
-    'apps.compression',
-    'apps.conversion',
-    'apps.pdf_tools',
-    'apps.analytics',
+    
+    # Local apps - Enterprise Features
+    'apps.uploads',  # Chunked upload system
+    'apps.versions',  # Document version control
+    'apps.workflows',  # Enterprise workflows
+    'apps.audit',  # Audit logging
+    'apps.notifications',  # Multi-channel notifications
+    'apps.dashboard',  # Real-time metrics
+    'apps.search_engine',  # Full-text search
+    
+    # Local apps - Document Processing
+    'apps.compression',  # PDF compression
+    'apps.conversion',  # Document conversion + OCR
+    'apps.pdf_tools',  # PDF split/merge/manipulation
+    'apps.analytics',  # Analytics
 ]
 
 MIDDLEWARE = [
