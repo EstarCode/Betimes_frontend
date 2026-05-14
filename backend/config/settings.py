@@ -71,6 +71,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Custom security middleware
+    'config.middleware.SecurityHeadersMiddleware',
+    'config.middleware.RateLimitMiddleware',
+    'config.middleware.RequestLoggingMiddleware',
+    'config.middleware.InputSanitizationMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -101,16 +106,37 @@ DATABASES = {
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
+        'NAME': 'apps.authentication.validators.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 12,
+        }
+    },
+    {
+        'NAME': 'apps.authentication.validators.UppercaseValidator',
+    },
+    {
+        'NAME': 'apps.authentication.validators.LowercaseValidator',
+    },
+    {
+        'NAME': 'apps.authentication.validators.NumberValidator',
+    },
+    {
+        'NAME': 'apps.authentication.validators.SpecialCharacterValidator',
+    },
+    {
+        'NAME': 'apps.authentication.validators.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'apps.authentication.validators.PasswordHistoryValidator',
+    },
+    {
+        'NAME': 'apps.authentication.validators.MaximumLengthValidator',
+        'OPTIONS': {
+            'max_length': 128,
+        }
+    },
+    {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
 
