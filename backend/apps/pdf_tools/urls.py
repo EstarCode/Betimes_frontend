@@ -1,11 +1,11 @@
 """
-URL configuration for PDF tools.
+PDF Tools URLs
 """
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from . import views
 
-from django.urls import path
+router = DefaultRouter()
+router.register(r'', views.PDFToolsViewSet, basename='pdf-tools')
 
-app_name = 'pdf_tools'
-
-urlpatterns = [
-    # TODO: Add PDF tool endpoints (merge, split, rotate, watermark)
-]
+urlpatterns = router.urls

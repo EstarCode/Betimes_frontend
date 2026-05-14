@@ -3,6 +3,7 @@ Views for authentication.
 """
 
 from rest_framework import generics, status
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -116,3 +117,164 @@ class PasswordResetConfirmView(generics.GenericAPIView):
             'success': True,
             'message': 'Password reset successfully'
         }, status=status.HTTP_200_OK)
+
+
+# MFA Views
+from .mfa_service import MFAService
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def mfa_setup(request):
+    """
+    Setup MFA for user
+    
+    POST /api/v1/auth/mfa/setup/
+    """
+    mfa_service = MFAService()
+    result = mfa_service.setup_totp(request.user)
+    
+    if result['success']:
+        return Response(result, status=status.HTTP_200_OK)
+    else:
+        return Response(
+            {'error': result.get('error', 'MFA setup failed')},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def mfa_verify_setup(request):
+    """
+    Verify MFA setup with token
+    
+    POST /api/v1/auth/mfa/verify-setup/
+    Body: {"token": "123456"}
+    """
+    token = request.data.get('token')
+    if not token:
+        return Response(
+            {'error': 'Token required'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    mfa_service = MFAService()
+    success = mfa_service.verify_totp_setup(request.user, token)
+    
+    if success:
+        return Response({
+            'success': True,
+            'message': 'MFA enabled successfully'
+        }, status=status.HTTP_200_OK)
+    else:
+        return Response(
+            {'error': 'Invalid token'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def mfa_disable(request):
+    """
+    Disable MFA for user
+    
+    POST /api/v1/auth/mfa/disable/
+    Body: {"password": "user_password"}
+    """
+    password = request.data.get('password')
+    if not password or not request.user.check_password(password):
+        return Response(
+            {'error': 'Invalid password'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    mfa_service = MFAService()
+    success = mfa_service.disable_mfa(request.user)
+    
+    if success:
+        return Response({
+            'success': True,
+            'message': 'MFA disabled successfully'
+        }, status=status.HTTP_200_OK)
+    else:
+        return Response(
+            {'error': 'Failed to disable MFA'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def mfa_regenerate_backup_codes(request):
+    """
+    Regenerate backup codes
+    
+    POST /api/v1/auth/mfa/regenerate-backup-codes/
+    """
+    mfa_service = MFAService()
+    codes = mfa_service.regenerate_backup_codes(request.user)
+    
+    if codes:
+        return Response({
+            'success': True,
+            'backup_codes': codes
+        }, status=status.HTTP_200_OK)
+    else:
+        return Response(
+            {'error': 'Failed to regenerate backup codes'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def mfa_verify_login(request):
+    """
+    Verify MFA token during login
+    
+    POST /api/v1/auth/mfa/verify-login/
+    Body: {"email": "user@example.com", "token": "123456", "use_backup": false}
+    """
+    email = request.data.get('email')
+    token = request.data.get('token')
+    use_backup = request.data.get('use_backup', False)
+    
+    if not email or not token:
+        return Response(
+            {'error': 'Email and token required'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        return Response(
+            {'error': 'Invalid credentials'},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+    
+    mfa_service = MFAService()
+    
+    if use_backup:
+        success = mfa_service.verify_backup_code(user, token)
+    else:
+        success = mfa_service.verify_totp(user, token)
+    
+    if success:
+        # Generate JWT tokens
+        from rest_framework_simplejwt.tokens import RefreshToken
+        refresh = RefreshToken.for_user(user)
+        
+        return Response({
+            'success': True,
+            'access': str(refresh.access_token),
+            'refresh': str(refresh),
+            'user': UserSerializer(user).data
+        }, status=status.HTTP_200_OK)
+    else:
+        return Response(
+            {'error': 'Invalid token'},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
