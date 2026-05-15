@@ -155,14 +155,14 @@ const PDFTools = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-purple-50 to-coral-50 py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-teal-600 to-purple-600 bg-clip-text text-transparent mb-2">
             PDF Tools
           </h1>
           <p className="text-gray-600">Split, merge, and manipulate PDF documents</p>
@@ -182,7 +182,7 @@ const PDFTools = () => {
                   }}
                   className={`flex items-center space-x-2 px-6 py-4 font-medium transition-colors ${
                     activeTab === tab.id
-                      ? 'text-blue-600 border-b-2 border-blue-600'
+                      ? 'text-teal-600 border-b-2 border-teal-600'
                       : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
@@ -205,7 +205,7 @@ const PDFTools = () => {
                     type="file"
                     accept="application/pdf"
                     onChange={handleFileSelect}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
                   />
                   {selectedFile && (
                     <p className="mt-2 text-sm text-gray-600">Selected: {selectedFile.name}</p>
@@ -252,7 +252,7 @@ const PDFTools = () => {
                   ))}
                   <button
                     onClick={addSplitRange}
-                    className="mt-2 px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg"
+                    className="mt-2 px-4 py-2 text-teal-600 hover:bg-teal-50 rounded-lg"
                   >
                     + Add Range
                   </button>
@@ -262,7 +262,7 @@ const PDFTools = () => {
                   <button
                     onClick={handleSplitByRange}
                     disabled={processing || !selectedFile}
-                    className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50"
+                    className="flex-1 bg-teal-600 text-white py-3 rounded-lg font-medium hover:bg-teal-700 disabled:opacity-50"
                   >
                     {processing ? 'Processing...' : 'Split by Ranges'}
                   </button>
@@ -289,7 +289,7 @@ const PDFTools = () => {
                     accept="application/pdf"
                     multiple
                     onChange={(e) => setMergeFiles(Array.from(e.target.files))}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
                   />
                   {mergeFiles.length > 0 && (
                     <div className="mt-4 space-y-2">
@@ -315,7 +315,7 @@ const PDFTools = () => {
                 <button
                   onClick={handleMerge}
                   disabled={processing || mergeFiles.length < 2}
-                  className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50"
+                  className="w-full bg-teal-600 text-white py-3 rounded-lg font-medium hover:bg-teal-700 disabled:opacity-50"
                 >
                   {processing ? 'Processing...' : `Merge ${mergeFiles.length} Files`}
                 </button>
@@ -333,7 +333,7 @@ const PDFTools = () => {
                     type="file"
                     accept="application/pdf"
                     onChange={handleFileSelect}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
                   />
                 </div>
 
@@ -371,7 +371,7 @@ const PDFTools = () => {
                 <button
                   onClick={handleRotate}
                   disabled={processing || !selectedFile}
-                  className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50"
+                  className="w-full bg-teal-600 text-white py-3 rounded-lg font-medium hover:bg-teal-700 disabled:opacity-50"
                 >
                   {processing ? 'Processing...' : 'Rotate Pages'}
                 </button>

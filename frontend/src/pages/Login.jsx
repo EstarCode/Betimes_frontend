@@ -29,15 +29,15 @@ const Login = () => {
     setLoading(true)
 
     try {
-      const response = await axios.post(`${API_URL}/auth/token/`, {
+      const response = await axios.post(`${API_URL}/v1/auth/login/`, {
         email: formData.email,
         password: formData.password
       })
 
       // Store tokens and user data
-      localStorage.setItem('token', response.data.access)
-      localStorage.setItem('refreshToken', response.data.refresh)
-      localStorage.setItem('user', JSON.stringify(response.data.user))
+      localStorage.setItem('token', response.data.data.access)
+      localStorage.setItem('refreshToken', response.data.data.refresh)
+      localStorage.setItem('user', JSON.stringify(response.data.data.user))
 
       // Reset guest count after login
       guestAccess.resetCount()
@@ -57,7 +57,7 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-purple-50 to-coral-50 flex items-center justify-center py-12 px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -66,7 +66,7 @@ const Login = () => {
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-teal-600 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4">
               <FiLock className="text-white text-2xl" />
             </div>
             <h2 className="text-3xl font-bold text-gray-800">Welcome Back</h2>
@@ -88,7 +88,7 @@ const Login = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                   placeholder="you@example.com"
                 />
               </div>
@@ -107,7 +107,7 @@ const Login = () => {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                   placeholder="••••••••"
                 />
                 <button
@@ -124,7 +124,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3 bg-gradient-to-r from-teal-600 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
@@ -134,7 +134,7 @@ const Login = () => {
           <div className="mt-6 text-center">
             <p className="text-gray-600">
               Don't have an account?{' '}
-              <Link to="/register" className="text-blue-600 font-semibold hover:underline">
+              <Link to="/register" className="text-teal-600 font-semibold hover:underline">
                 Sign up
               </Link>
             </p>

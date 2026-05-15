@@ -35,8 +35,8 @@ const Dashboard = () => {
       label: 'Total Documents',
       value: metrics?.total_uploads || 0,
       change: '+12%',
-      color: 'from-blue-500 to-blue-600',
-      bgColor: 'from-blue-50 to-blue-100'
+      color: 'from-teal-500 to-teal-600',
+      bgColor: 'from-teal-50 to-teal-100'
     },
     {
       icon: <FiActivity className="text-3xl" />,
@@ -51,24 +51,24 @@ const Dashboard = () => {
       label: 'Active Users',
       value: metrics?.active_users || 0,
       change: '+8%',
-      color: 'from-green-500 to-green-600',
-      bgColor: 'from-green-50 to-green-100'
+      color: 'from-emerald-500 to-emerald-600',
+      bgColor: 'from-emerald-50 to-emerald-100'
     },
     {
       icon: <FiDatabase className="text-3xl" />,
       label: 'Storage Used',
       value: `${((metrics?.storage_used || 0) / 1024 / 1024 / 1024).toFixed(2)} GB`,
       change: '75% capacity',
-      color: 'from-orange-500 to-orange-600',
-      bgColor: 'from-orange-50 to-orange-100'
+      color: 'from-coral-500 to-orange-600',
+      bgColor: 'from-coral-50 to-orange-100'
     },
   ]
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-50 via-purple-50 to-coral-50">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-teal-600 mx-auto mb-4"></div>
           <p className="text-gray-600 text-lg">Loading dashboard...</p>
         </div>
       </div>
@@ -76,7 +76,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-purple-50 to-coral-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -84,8 +84,8 @@ const Dashboard = () => {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
-            Enterprise Dashboard
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-teal-600 to-purple-600 bg-clip-text text-transparent mb-2">
+            Dashboard
           </h1>
           <p className="text-gray-600">Real-time system metrics and activity monitoring</p>
         </motion.div>
@@ -139,9 +139,9 @@ const Dashboard = () => {
                       animate={{ width: `${item.value}%` }}
                       transition={{ duration: 1, delay: index * 0.1 }}
                       className={`h-3 rounded-full ${
-                        item.status === 'excellent' ? 'bg-gradient-to-r from-green-400 to-green-600' :
-                        item.status === 'good' ? 'bg-gradient-to-r from-blue-400 to-blue-600' :
-                        'bg-gradient-to-r from-yellow-400 to-yellow-600'
+                        item.status === 'excellent' ? 'bg-gradient-to-r from-emerald-400 to-emerald-600' :
+                        item.status === 'good' ? 'bg-gradient-to-r from-teal-400 to-teal-600' :
+                        'bg-gradient-to-r from-amber-400 to-amber-600'
                       }`}
                     />
                   </div>

@@ -4,13 +4,13 @@ import { FiZap, FiShield, FiClock, FiCheck, FiUploadCloud, FiFileText, FiUsers, 
 
 const Home = () => {
   const pdfTools = [
-    { name: 'Merge PDF', icon: FiLayers, desc: 'Combine multiple PDFs into one', link: '/pdf-tools/merge', color: 'from-blue-500 to-cyan-500' },
-    { name: 'Split PDF', icon: FiScissors, desc: 'Split PDF into separate pages', link: '/pdf-tools/split', color: 'from-purple-500 to-pink-500' },
-    { name: 'Compress PDF', icon: FiTrendingUp, desc: 'Reduce PDF file size', link: '/compress', color: 'from-green-500 to-emerald-500' },
-    { name: 'Convert PDF', icon: FiFileText, desc: 'Convert PDF to other formats', link: '/convert', color: 'from-orange-500 to-red-500' },
-    { name: 'Protect PDF', icon: FiLock, desc: 'Add password protection', link: '/pdf-tools/protect', color: 'from-indigo-500 to-blue-500' },
-    { name: 'Unlock PDF', icon: FiUnlock, desc: 'Remove PDF password', link: '/pdf-tools/unlock', color: 'from-yellow-500 to-orange-500' },
-    { name: 'Watermark PDF', icon: FiDroplet, desc: 'Add watermark to PDF', link: '/pdf-tools/watermark', color: 'from-teal-500 to-cyan-500' },
+    { name: 'Merge PDF', icon: FiLayers, desc: 'Combine multiple PDFs into one', link: '/pdf-tools/merge', color: 'from-teal-500 to-cyan-500' },
+    { name: 'Split PDF', icon: FiScissors, desc: 'Split PDF into separate pages', link: '/pdf-tools/split', color: 'from-coral-500 to-orange-500' },
+    { name: 'Compress PDF', icon: FiTrendingUp, desc: 'Reduce PDF file size', link: '/compress', color: 'from-emerald-500 to-teal-500' },
+    { name: 'Convert PDF', icon: FiFileText, desc: 'Convert PDF to other formats', link: '/convert', color: 'from-purple-500 to-pink-500' },
+    { name: 'Protect PDF', icon: FiLock, desc: 'Add password protection', link: '/pdf-tools/protect', color: 'from-indigo-500 to-purple-500' },
+    { name: 'Unlock PDF', icon: FiUnlock, desc: 'Remove PDF password', link: '/pdf-tools/unlock', color: 'from-amber-500 to-orange-500' },
+    { name: 'Watermark PDF', icon: FiDroplet, desc: 'Add watermark to PDF', link: '/pdf-tools/watermark', color: 'from-cyan-500 to-blue-500' },
     { name: 'Organize PDF', icon: FiGrid, desc: 'Reorder PDF pages', link: '/pdf-tools/organize', color: 'from-rose-500 to-pink-500' },
   ]
 
@@ -22,10 +22,10 @@ const Home = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-teal-50 to-purple-50">
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-20 pb-32">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-purple-600/10 to-pink-600/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-teal-600/10 via-purple-600/10 to-coral-600/10"></div>
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -33,7 +33,7 @@ const Home = () => {
             transition={{ duration: 0.8 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-6">
+            <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-teal-600 via-purple-600 to-coral-500 bg-clip-text text-transparent mb-6">
               Professional PDF Tools
             </h1>
             <p className="text-xl md:text-2xl text-gray-600 mb-8">
@@ -42,7 +42,7 @@ const Home = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/pdf-tools/merge"
-                className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                className="px-8 py-4 bg-gradient-to-r from-teal-600 to-purple-600 text-white rounded-xl font-semibold hover:shadow-2xl hover:scale-105 transition-all duration-300"
               >
                 <FiUploadCloud className="inline mr-2" />
                 Start Processing
@@ -55,7 +55,7 @@ const Home = () => {
               </Link>
             </div>
             <p className="mt-6 text-sm text-gray-500">
-              <FiCheck className="inline text-green-500 mr-1" />
+              <FiCheck className="inline text-teal-500 mr-1" />
               No credit card required • Process 3 documents free
             </p>
           </motion.div>
@@ -109,7 +109,7 @@ const Home = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">Why Choose Betimes?</h2>
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">Why Choose Us?</h2>
             <p className="text-gray-600 text-lg">Fast, secure, and easy to use</p>
           </motion.div>
 
@@ -123,7 +123,7 @@ const Home = () => {
                 transition={{ delay: index * 0.1 }}
                 className="text-center p-6"
               >
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-teal-500 to-purple-500 flex items-center justify-center">
                   <feature.icon className="text-white text-2xl" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-800 mb-2">{feature.title}</h3>
@@ -135,7 +135,7 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">
+      <section className="py-20 bg-gradient-to-r from-teal-600 via-purple-600 to-coral-500">
         <div className="container mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

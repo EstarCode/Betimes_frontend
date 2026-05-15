@@ -37,7 +37,7 @@ const Convert = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-purple-50 to-coral-50 py-12">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -45,7 +45,7 @@ const Convert = () => {
         >
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-4">
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-teal-600 to-purple-600 bg-clip-text text-transparent mb-4">
               Document Conversion
             </h1>
             <p className="text-xl text-gray-600">
@@ -73,13 +73,13 @@ const Convert = () => {
                       p-6 rounded-2xl border-2 transition-all duration-300
                       ${
                         conversionType === type.value
-                          ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-purple-50 shadow-lg'
-                          : 'border-gray-200 bg-white/50 hover:border-blue-300'
+                          ? 'border-teal-500 bg-gradient-to-br from-teal-50 to-purple-50 shadow-lg'
+                          : 'border-gray-200 bg-white/50 hover:border-teal-300'
                       }
                     `}
                   >
                     <Icon className={`text-3xl mx-auto mb-3 ${
-                      conversionType === type.value ? 'text-blue-600' : 'text-gray-600'
+                      conversionType === type.value ? 'text-teal-600' : 'text-gray-600'
                     }`} />
                     <span className="font-medium text-gray-900 text-sm">{type.label}</span>
                   </motion.button>
@@ -92,7 +92,7 @@ const Convert = () => {
 
             {converting && (
               <div className="mt-6 text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto mb-4"></div>
                 <p className="text-gray-600">Converting your document...</p>
               </div>
             )}

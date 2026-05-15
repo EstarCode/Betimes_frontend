@@ -43,7 +43,7 @@ const Register = () => {
     setLoading(true)
 
     try {
-      await axios.post(`${API_URL}/auth/register/`, {
+      await axios.post(`${API_URL}/v1/auth/register/`, {
         email: formData.email,
         username: formData.username,
         password: formData.password,
@@ -72,7 +72,7 @@ const Register = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-purple-50 to-coral-50 flex items-center justify-center py-12 px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -81,7 +81,7 @@ const Register = () => {
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-teal-600 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4">
               <FiUser className="text-white text-2xl" />
             </div>
             <h2 className="text-3xl font-bold text-gray-800">Create Account</h2>
@@ -89,19 +89,19 @@ const Register = () => {
           </div>
 
           {/* Benefits */}
-          <div className="bg-blue-50 rounded-lg p-4 mb-6">
-            <p className="text-sm font-semibold text-blue-900 mb-2">Free Account Benefits:</p>
-            <ul className="space-y-1 text-sm text-blue-800">
+          <div className="bg-teal-50 rounded-lg p-4 mb-6">
+            <p className="text-sm font-semibold text-teal-900 mb-2">Free Account Benefits:</p>
+            <ul className="space-y-1 text-sm text-teal-800">
               <li className="flex items-center">
-                <FiCheck className="mr-2 text-blue-600" />
+                <FiCheck className="mr-2 text-teal-600" />
                 Unlimited document processing
               </li>
               <li className="flex items-center">
-                <FiCheck className="mr-2 text-blue-600" />
+                <FiCheck className="mr-2 text-teal-600" />
                 Save your processing history
               </li>
               <li className="flex items-center">
-                <FiCheck className="mr-2 text-blue-600" />
+                <FiCheck className="mr-2 text-teal-600" />
                 Access all PDF tools
               </li>
             </ul>
@@ -122,7 +122,7 @@ const Register = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                   placeholder="you@example.com"
                 />
               </div>
@@ -141,7 +141,7 @@ const Register = () => {
                   value={formData.username}
                   onChange={handleChange}
                   required
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                   placeholder="johndoe"
                 />
               </div>
@@ -160,7 +160,7 @@ const Register = () => {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                   placeholder="••••••••"
                 />
                 <button
@@ -186,7 +186,7 @@ const Register = () => {
                   value={formData.password_confirm}
                   onChange={handleChange}
                   required
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                   placeholder="••••••••"
                 />
               </div>
@@ -196,7 +196,7 @@ const Register = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3 bg-gradient-to-r from-teal-600 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Creating account...' : 'Create Account'}
             </button>
@@ -206,7 +206,7 @@ const Register = () => {
           <div className="mt-6 text-center">
             <p className="text-gray-600">
               Already have an account?{' '}
-              <Link to="/login" className="text-blue-600 font-semibold hover:underline">
+              <Link to="/login" className="text-teal-600 font-semibold hover:underline">
                 Sign in
               </Link>
             </p>

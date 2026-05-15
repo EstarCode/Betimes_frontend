@@ -65,22 +65,22 @@ const Compress = () => {
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-secondary-50 py-12">
+    <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-teal-50 via-purple-50 to-coral-50 py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-secondary-900 mb-4">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-teal-600 to-purple-600 bg-clip-text text-transparent mb-4">
               Compress PDF
             </h1>
-            <p className="text-xl text-secondary-600">
+            <p className="text-xl text-gray-600">
               Reduce PDF file size while maintaining quality
             </p>
           </div>
 
-          <div className="card mb-8">
+          <div className="backdrop-blur-xl bg-white/70 rounded-3xl shadow-xl border border-white/20 p-6 mb-8">
             <FileUploader onFileSelect={handleFileSelect} acceptedFileTypes=".pdf" />
           </div>
 
@@ -88,9 +88,9 @@ const Compress = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="card mb-8"
+              className="backdrop-blur-xl bg-white/70 rounded-3xl shadow-xl border border-white/20 p-6 mb-8"
             >
-              <h3 className="text-lg font-semibold text-secondary-900 mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
                 Compression Level
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -102,18 +102,18 @@ const Compress = () => {
                       p-4 rounded-lg border-2 transition-all duration-200 text-left
                       ${
                         compressionLevel === level.value
-                          ? 'border-primary bg-primary-50'
-                          : 'border-secondary-200 hover:border-primary-300'
+                          ? 'border-teal-500 bg-teal-50'
+                          : 'border-gray-200 hover:border-teal-300'
                       }
                     `}
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <span className="font-semibold text-secondary-900">{level.label}</span>
+                      <span className="font-semibold text-gray-900">{level.label}</span>
                       {compressionLevel === level.value && (
-                        <FiCheck className="text-primary" />
+                        <FiCheck className="text-teal-600" />
                       )}
                     </div>
-                    <p className="text-sm text-secondary-600">{level.description}</p>
+                    <p className="text-sm text-gray-600">{level.description}</p>
                   </button>
                 ))}
               </div>
@@ -121,7 +121,7 @@ const Compress = () => {
               <button
                 onClick={handleCompress}
                 disabled={loading}
-                className="w-full btn-primary mt-6"
+                className="w-full bg-gradient-to-r from-teal-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all disabled:opacity-50 mt-6"
               >
                 {loading ? 'Compressing...' : 'Compress PDF'}
               </button>
@@ -132,33 +132,33 @@ const Compress = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="card bg-green-50 border-green-200"
+              className="backdrop-blur-xl bg-white/70 rounded-3xl shadow-xl border border-white/20 p-6 bg-emerald-50 border-emerald-200"
             >
-              <h3 className="text-lg font-semibold text-secondary-900 mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
                 Compression Complete!
               </h3>
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div>
-                  <p className="text-sm text-secondary-600">Original Size</p>
-                  <p className="text-xl font-semibold text-secondary-900">
+                  <p className="text-sm text-gray-600">Original Size</p>
+                  <p className="text-xl font-semibold text-gray-900">
                     {(result.original_size / 1024 / 1024).toFixed(2)} MB
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-secondary-600">Compressed Size</p>
-                  <p className="text-xl font-semibold text-secondary-900">
+                  <p className="text-sm text-gray-600">Compressed Size</p>
+                  <p className="text-xl font-semibold text-gray-900">
                     {(result.compressed_size / 1024 / 1024).toFixed(2)} MB
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-secondary-600">Reduction</p>
-                  <p className="text-xl font-semibold text-green-600">
+                  <p className="text-sm text-gray-600">Reduction</p>
+                  <p className="text-xl font-semibold text-emerald-600">
                     {result.compression_ratio}%
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-secondary-600">Processing Time</p>
-                  <p className="text-xl font-semibold text-secondary-900">
+                  <p className="text-sm text-gray-600">Processing Time</p>
+                  <p className="text-xl font-semibold text-gray-900">
                     {result.processing_time.toFixed(2)}s
                   </p>
                 </div>
@@ -166,7 +166,7 @@ const Compress = () => {
               <a
                 href={result.compressed_file_url}
                 download
-                className="w-full btn-primary flex items-center justify-center space-x-2"
+                className="w-full bg-gradient-to-r from-teal-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center space-x-2"
               >
                 <FiDownload />
                 <span>Download Compressed PDF</span>

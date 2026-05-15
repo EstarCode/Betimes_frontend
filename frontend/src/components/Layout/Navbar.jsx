@@ -39,10 +39,10 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-teal-600 to-purple-600 rounded-lg flex items-center justify-center">
               <FiFileText className="text-white text-xl" />
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <span className="text-2xl font-bold bg-gradient-to-r from-teal-600 to-purple-600 bg-clip-text text-transparent">
               Betimes
             </span>
           </Link>
@@ -52,7 +52,7 @@ const Navbar = () => {
             <Link
               to="/"
               className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                isActive('/') ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50'
+                isActive('/') ? 'bg-teal-50 text-teal-600' : 'text-gray-700 hover:bg-gray-50'
               }`}
             >
               Home
@@ -84,9 +84,9 @@ const Navbar = () => {
                       <Link
                         key={tool.name}
                         to={tool.link}
-                        className="flex items-center px-4 py-3 hover:bg-blue-50 transition-colors"
+                        className="flex items-center px-4 py-3 hover:bg-teal-50 transition-colors"
                       >
-                        <tool.icon className="text-blue-600 mr-3" />
+                        <tool.icon className="text-teal-600 mr-3" />
                         <span className="text-gray-700 font-medium">{tool.name}</span>
                       </Link>
                     ))}
@@ -100,13 +100,13 @@ const Navbar = () => {
                 <Link
                   to="/dashboard"
                   className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                    isActive('/dashboard') ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50'
+                    isActive('/dashboard') ? 'bg-teal-50 text-teal-600' : 'text-gray-700 hover:bg-gray-50'
                   }`}
                 >
                   Dashboard
                 </Link>
                 <div className="flex items-center space-x-2 ml-4">
-                  <div className="px-3 py-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg text-sm">
+                  <div className="px-3 py-1 bg-gradient-to-r from-teal-600 to-purple-600 text-white rounded-lg text-sm">
                     {user.email}
                   </div>
                   <button
@@ -128,7 +128,7 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to="/register"
-                  className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:shadow-lg transition-all"
+                  className="px-6 py-2 bg-gradient-to-r from-teal-600 to-purple-600 text-white rounded-lg font-medium hover:shadow-lg transition-all"
                 >
                   Sign Up
                 </Link>
@@ -170,7 +170,7 @@ const Navbar = () => {
                   className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  <tool.icon className="mr-3 text-blue-600" />
+                  <tool.icon className="mr-3 text-teal-600" />
                   {tool.name}
                 </Link>
               ))}
@@ -206,7 +206,7 @@ const Navbar = () => {
                   </Link>
                   <Link
                     to="/register"
-                    className="block px-4 py-3 text-center bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium"
+                    className="block px-4 py-3 text-center bg-gradient-to-r from-teal-600 to-purple-600 text-white rounded-lg font-medium"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Sign Up
