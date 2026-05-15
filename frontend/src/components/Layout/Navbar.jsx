@@ -1,203 +1,222 @@
-import { Link, useNavigate } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
-import { FiMenu, FiX, FiUser, FiLogOut, FiMoon, FiSun, FiSettings, FiShield } from 'react-icons/fi'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useState } from 'react'
-import { logout } from '../../store/slices/authSlice'
+import { FiMenu, FiX, FiUser, FiLogOut, FiScissors, FiLayers, FiLock, FiUnlock, FiDroplet, FiGrid, FiFileText, FiTrendingUp, FiChevronDown } from 'react-icons/fi'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [darkMode, setDarkMode] = useState(false)
-  const { isAuthenticated, user } = useSelector((state) => state.auth)
-  const dispatch = useDispatch()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [pdfToolsOpen, setPdfToolsOpen] = useState(false)
   const navigate = useNavigate()
+  const location = useLocation()
+  
+  // Check if user is logged in
+  const isAuthenticated = localStorage.getItem('token')
+  const user = JSON.parse(localStorage.getItem('user') || '{}')
 
   const handleLogout = () => {
-    dispatch(logout())
+    localStorage.removeItem('token')
+    localStorage.removeItem('refreshToken')
+    localStorage.removeItem('user')
     navigate('/login')
   }
 
-  const toggleTheme = () => {
-    setDarkMode(!darkMode)
-    document.documentElement.classList.toggle('dark')
-  }
+  const pdfTools = [
+    { name: 'Merge PDF', icon: FiLayers, link: '/pdf-tools/merge' },
+    { name: 'Split PDF', icon: FiScissors, link: '/pdf-tools/split' },
+    { name: 'Compress PDF', icon: FiTrendingUp, link: '/compress' },
+    { name: 'Convert PDF', icon: FiFileText, link: '/convert' },
+    { name: 'Protect PDF', icon: FiLock, link: '/pdf-tools/protect' },
+    { name: 'Unlock PDF', icon: FiUnlock, link: '/pdf-tools/unlock' },
+    { name: 'Watermark PDF', icon: FiDroplet, link: '/pdf-tools/watermark' },
+    { name: 'Organize PDF', icon: FiGrid, link: '/pdf-tools/organize' },
+  ]
+
+  const isActive = (path) => location.pathname === path
 
   return (
-    <nav className="backdrop-blur-xl bg-white/80 shadow-lg border-b border-white/20 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                <span className="text-white font-bold text-xl">B</span>
-              </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Betimes Enterprise
-              </span>
-            </Link>
-          </div>
+    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 shadow-sm">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-2">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+              <FiFileText className="text-white text-xl" />
+            </div>
+            <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Betimes
+            </span>
+          </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
-            {isAuthenticated ? (
-              <>
-                <Link to="/dashboard" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
-                  Dashboard
-                </Link>
-                <Link to="/compress" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
-                  Compress
-                </Link>
-                <Link to="/convert" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
-                  Convert
-                </Link>
-                <Link to="/workflows" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
-                  Workflows
-                </Link>
-                {(user?.role === 'Super_Admin' || user?.role === 'Admin') && (
-                  <Link to="/admin" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
-                    Admin
-                  </Link>
-                )}
-                
-                <button
-                  onClick={toggleTheme}
-                  className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-                  title="Toggle Theme"
-                >
-                  {darkMode ? <FiSun className="text-gray-700" /> : <FiMoon className="text-gray-700" />}
-                </button>
+          <div className="hidden md:flex items-center space-x-1">
+            <Link
+              to="/"
+              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                isActive('/') ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              Home
+            </Link>
 
-                <div className="flex items-center space-x-3 pl-3 border-l border-gray-200">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
-                      <FiUser className="text-white text-sm" />
-                    </div>
-                    <div className="text-sm">
-                      <p className="font-medium text-gray-900">{user?.first_name || 'User'}</p>
-                      <p className="text-xs text-gray-500">{user?.role || 'User'}</p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={handleLogout}
-                    className="p-2 rounded-lg hover:bg-red-50 text-gray-700 hover:text-red-600 transition-colors"
-                    title="Logout"
+            {/* PDF Tools Dropdown */}
+            <div className="relative">
+              <button
+                onMouseEnter={() => setPdfToolsOpen(true)}
+                onMouseLeave={() => setPdfToolsOpen(false)}
+                className="px-4 py-2 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-all flex items-center"
+              >
+                PDF Tools
+                <FiChevronDown className={`ml-1 transition-transform ${pdfToolsOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              <AnimatePresence>
+                {pdfToolsOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    onMouseEnter={() => setPdfToolsOpen(true)}
+                    onMouseLeave={() => setPdfToolsOpen(false)}
+                    className="absolute top-full left-0 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 py-2"
                   >
-                    <FiLogOut />
-                  </button>
-                </div>
-              </>
-            ) : (
-              <>
-                <Link to="/login" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
-                  Login
-                </Link>
-                <Link to="/register" className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transition-all">
-                  Get Started
-                </Link>
-              </>
-            )}
-          </div>
+                    {pdfTools.map((tool) => (
+                      <Link
+                        key={tool.name}
+                        to={tool.link}
+                        className="flex items-center px-4 py-3 hover:bg-blue-50 transition-colors"
+                      >
+                        <tool.icon className="text-blue-600 mr-3" />
+                        <span className="text-gray-700 font-medium">{tool.name}</span>
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-2">
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-            >
-              {darkMode ? <FiSun className="text-gray-700" /> : <FiMoon className="text-gray-700" />}
-            </button>
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700 hover:text-blue-600"
-            >
-              {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Navigation */}
-      {isOpen && (
-        <div className="md:hidden border-t border-white/20 backdrop-blur-xl bg-white/90">
-          <div className="px-4 pt-2 pb-4 space-y-2">
             {isAuthenticated ? (
               <>
                 <Link
                   to="/dashboard"
-                  className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium transition-colors"
-                  onClick={() => setIsOpen(false)}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                    isActive('/dashboard') ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50'
+                  }`}
                 >
                   Dashboard
                 </Link>
-                <Link
-                  to="/compress"
-                  className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium transition-colors"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Compress
-                </Link>
-                <Link
-                  to="/convert"
-                  className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium transition-colors"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Convert
-                </Link>
-                <Link
-                  to="/workflows"
-                  className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium transition-colors"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Workflows
-                </Link>
-                {(user?.role === 'Super_Admin' || user?.role === 'Admin') && (
-                  <Link
-                    to="/admin"
-                    className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium transition-colors"
-                    onClick={() => setIsOpen(false)}
+                <div className="flex items-center space-x-2 ml-4">
+                  <div className="px-3 py-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg text-sm">
+                    {user.email}
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg font-medium transition-all flex items-center"
                   >
-                    Admin Panel
-                  </Link>
-                )}
-                <Link
-                  to="/mfa-setup"
-                  className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium transition-colors"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <FiShield className="inline mr-2" />
-                  MFA Setup
-                </Link>
-                <button
-                  onClick={() => {
-                    handleLogout()
-                    setIsOpen(false)
-                  }}
-                  className="w-full text-left px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 font-medium transition-colors"
-                >
-                  <FiLogOut className="inline mr-2" />
-                  Logout
-                </button>
+                    <FiLogOut className="mr-2" />
+                    Logout
+                  </button>
+                </div>
               </>
             ) : (
-              <>
+              <div className="flex items-center space-x-2 ml-4">
                 <Link
                   to="/login"
-                  className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium transition-colors"
-                  onClick={() => setIsOpen(false)}
+                  className="px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg font-medium transition-all"
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className="block px-4 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium hover:shadow-lg transition-all"
-                  onClick={() => setIsOpen(false)}
+                  className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:shadow-lg transition-all"
                 >
-                  Get Started
+                  Sign Up
                 </Link>
-              </>
+              </div>
             )}
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+          >
+            {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+          </button>
         </div>
-      )}
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden py-4 border-t border-gray-200"
+            >
+              <Link
+                to="/"
+                className="block px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg font-medium"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Home
+              </Link>
+
+              <div className="px-4 py-2 text-sm font-semibold text-gray-500 uppercase">PDF Tools</div>
+              {pdfTools.map((tool) => (
+                <Link
+                  key={tool.name}
+                  to={tool.link}
+                  className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <tool.icon className="mr-3 text-blue-600" />
+                  {tool.name}
+                </Link>
+              ))}
+
+              {isAuthenticated ? (
+                <>
+                  <Link
+                    to="/dashboard"
+                    className="block px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg font-medium mt-4"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={() => {
+                      handleLogout()
+                      setMobileMenuOpen(false)
+                    }}
+                    className="w-full text-left px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg font-medium flex items-center"
+                  >
+                    <FiLogOut className="mr-2" />
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <div className="mt-4 space-y-2">
+                  <Link
+                    to="/login"
+                    className="block px-4 py-3 text-center text-gray-700 hover:bg-gray-50 rounded-lg font-medium border border-gray-200"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="block px-4 py-3 text-center bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </nav>
   )
 }
