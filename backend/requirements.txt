@@ -8,6 +8,7 @@ whitenoise==6.6.0
 
 # Database (SQLite for development, PostgreSQL for production)
 dj-database-url==2.1.0
+psycopg2-binary==2.9.9
 
 # Image Processing - Install separately if fails: pip install --only-binary=:all: Pillow
 Pillow

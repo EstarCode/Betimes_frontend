@@ -1,10 +1,26 @@
 services:
+  # PostgreSQL Database
+  - type: pserv
+    name: betimes-postgres
+    env: docker
+    region: oregon
+    plan: starter
+    ipAllowList: []
+    
+  # Redis Cache
+  - type: redis
+    name: betimes-redis
+    region: oregon
+    plan: starter
+    ipAllowList: []
+
+  # Web Service
   - type: web
     name: betimes-backend
     env: python
     region: oregon
     rootDir: backend
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate
     startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 4 --threads 2 --timeout 120
     envVars:
       - key: PYTHON_VERSION
@@ -16,10 +32,32 @@ services:
       - key: ALLOWED_HOSTS
         value: .onrender.com
       - key: CORS_ALLOWED_ORIGINS
-        value: https://betimes.onrender.com
+        value: https://betimes.onrender.com,https://betimes.vercel.app,https://document-processing-system.vercel.app
       - key: CSRF_TRUSTED_ORIGINS
         value: https://betimes.onrender.com
+      - key: DATABASE_URL
+        fromDatabase:
+          name: betimes-postgres
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: betimes-redis
+          type: redis
+          property: connectionString
+      - key: CELERY_BROKER_URL
+        fromService:
+          name: betimes-redis
+          type: redis
+          property: connectionString
+      - key: CELERY_RESULT_BACKEND
+        fromService:
+          name: betimes-redis
+          type: redis
+          property: connectionString
+      - key: USE_REDIS_CACHE
+        value: True
 
+  # Celery Worker
   - type: worker
     name: betimes-celery-worker
     env: python
@@ -27,7 +65,28 @@ services:
     rootDir: backend
     buildCommand: pip install -r requirements.txt
     startCommand: celery -A config worker --loglevel=info --concurrency=4 --max-tasks-per-child=1000
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: betimes-postgres
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: betimes-redis
+          type: redis
+          property: connectionString
+      - key: CELERY_BROKER_URL
+        fromService:
+          name: betimes-redis
+          type: redis
+          property: connectionString
+      - key: CELERY_RESULT_BACKEND
+        fromService:
+          name: betimes-redis
+          type: redis
+          property: connectionString
 
+  # Celery Beat Scheduler
   - type: worker
     name: betimes-celery-beat
     env: python
@@ -35,3 +94,23 @@ services:
     rootDir: backend
     buildCommand: pip install -r requirements.txt
     startCommand: celery -A config beat --loglevel=info
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: betimes-postgres
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: betimes-redis
+          type: redis
+          property: connectionString
+      - key: CELERY_BROKER_URL
+        fromService:
+          name: betimes-redis
+          type: redis
+          property: connectionString
+      - key: CELERY_RESULT_BACKEND
+        fromService:
+          name: betimes-redis
+          type: redis
+          property: connectionString
