@@ -202,6 +202,8 @@ CORS_ALLOWED_ORIGINS = env.list(
         'http://localhost:5173',
         'http://localhost:3000',
         'https://betimes.onrender.com',
+        'https://betimes.vercel.app',
+        'https://document-processing-system.vercel.app',
     ]
 )
 CORS_ALLOW_CREDENTIALS = True
