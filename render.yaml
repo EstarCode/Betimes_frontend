@@ -1,17 +1,19 @@
 databases:
-  # PostgreSQL Database
+  # PostgreSQL Database - Optimized for high concurrency
   - name: betimes-postgres
     databaseName: betimes_db
     user: betimes_user
     region: oregon
-    plan: starter
+    plan: starter  # Upgrade to 'standard' or 'pro' for 100k+ users
     ipAllowList: []
 
 services:
+  # Redis Cache - Optimized for 100k+ users
   - type: redis
     name: betimes-redis
     region: oregon
-    plan: starter
+    plan: starter  # Upgrade to 'standard' or 'pro' for 100k+ users
+    maxmemoryPolicy: allkeys-lru
     ipAllowList: []
 
   # Web Service
@@ -20,11 +22,14 @@ services:
     env: python
     region: oregon
     rootDir: backend
+    plan: standard  # Upgrade to standard for better performance
     buildCommand: chmod +x render-build.sh && ./render-build.sh
-    startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120 --log-level info
+    startCommand: gunicorn config.wsgi:application -c gunicorn_config.py
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.9
+      - key: WEB_CONCURRENCY
+        value: 4
       - key: DEBUG
         value: False
       - key: SECRET_KEY
@@ -56,6 +61,8 @@ services:
           property: connectionString
       - key: USE_REDIS_CACHE
         value: True
+    autoDeploy: true
+    healthCheckPath: /health/
 
   # Celery Worker
   - type: worker
