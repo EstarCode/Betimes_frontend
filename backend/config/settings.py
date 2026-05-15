@@ -99,26 +99,40 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # Optimized for high concurrency with connection pooling
-import dj_database_url
+try:
+    import dj_database_url
+except ImportError:
+    dj_database_url = None
 
-DATABASE_URL = env('DATABASE_URL', default='')
+DATABASE_URL = env('DATABASE_URL', default='').strip().strip('"').strip("'")
 
-if DATABASE_URL and DATABASE_URL.strip():
+if DATABASE_URL and dj_database_url is not None:
     # Production: PostgreSQL with connection pooling
-    DATABASES = {
-        'default': dj_database_url.parse(
-            DATABASE_URL,
-            conn_max_age=600,  # Keep connections alive for 10 minutes
-            conn_health_checks=True,
-        )
-    }
-    # Connection pool settings for high concurrency
-    DATABASES['default']['OPTIONS'] = {
-        'connect_timeout': 10,
-        'options': '-c statement_timeout=30000',  # 30 second query timeout
-    }
-    DATABASES['default']['CONN_MAX_AGE'] = 600
-    DATABASES['default']['ATOMIC_REQUESTS'] = False  # Better performance
+    try:
+        DATABASES = {
+            'default': dj_database_url.parse(
+                DATABASE_URL,
+                conn_max_age=600,  # Keep connections alive for 10 minutes
+                conn_health_checks=True,
+            )
+        }
+        # Connection pool settings for high concurrency
+        DATABASES['default']['OPTIONS'] = {
+            'connect_timeout': 10,
+            'options': '-c statement_timeout=30000',  # 30 second query timeout
+        }
+        DATABASES['default']['CONN_MAX_AGE'] = 600
+        DATABASES['default']['ATOMIC_REQUESTS'] = False  # Better performance
+    except ValueError as exc:
+        raise ValueError(
+            "Invalid DATABASE_URL value. Expected something like "
+            "'postgresql://user:password@host:5432/dbname'."
+        ) from exc
+elif DATABASE_URL and dj_database_url is None:
+    raise ImportError(
+        "DATABASE_URL is set, but 'dj-database-url' is not installed. "
+        "Install dependencies from requirements.txt."
+    )
 else:
     # Development: SQLite
     DATABASES = {

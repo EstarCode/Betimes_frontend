@@ -72,10 +72,24 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
-import dj_database_url
-DATABASE_URL = os.getenv('DATABASE_URL', '')
-if DATABASE_URL and DATABASE_URL.strip():
-    DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
+try:
+    import dj_database_url
+except ImportError:
+    dj_database_url = None
+DATABASE_URL = os.getenv('DATABASE_URL', '').strip().strip('"').strip("'")
+if DATABASE_URL and dj_database_url is not None:
+    try:
+        DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
+    except ValueError as exc:
+        raise ValueError(
+            "Invalid DATABASE_URL value. Expected something like "
+            "'postgresql://user:password@host:5432/dbname'."
+        ) from exc
+elif DATABASE_URL and dj_database_url is None:
+    raise ImportError(
+        "DATABASE_URL is set, but 'dj-database-url' is not installed. "
+        "Install dependencies from requirements.txt."
+    )
 else:
     DATABASES = {
         'default': {
