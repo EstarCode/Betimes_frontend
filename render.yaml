@@ -24,7 +24,7 @@ services:
     rootDir: backend
     plan: standard  # Upgrade to standard for better performance
     buildCommand: chmod +x render-build.sh && ./render-build.sh
-    startCommand: gunicorn config.wsgi:application -c gunicorn_config.py
+    startCommand: chmod +x render-start.sh && ./render-start.sh
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.9
