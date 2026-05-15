@@ -6,20 +6,15 @@ echo "🚀 Starting Betimes Backend Build..."
 
 # Upgrade pip and install build tools
 echo "📦 Upgrading pip and build tools..."
-pip install --upgrade pip
-pip install wheel setuptools
+python -m pip install --upgrade pip setuptools wheel
 
 # Install Python dependencies
 echo "📦 Installing Python dependencies..."
 pip install -r requirements.txt
 
-# Run production readiness checks (don't fail build if checks fail)
-echo "🔍 Running production readiness checks..."
-python production-checklist.py || echo "⚠️  Some checks failed, but continuing with deployment..."
-
 # Collect static files
 echo "📁 Collecting static files..."
-python manage.py collectstatic --no-input
+python manage.py collectstatic --no-input --clear
 
 # Run database migrations
 echo "🗄️  Running database migrations..."

@@ -9,7 +9,12 @@ import django
 
 # Setup Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
-django.setup()
+
+try:
+    django.setup()
+except Exception as e:
+    print(f"❌ Django setup failed: {str(e)}")
+    sys.exit(1)
 
 from django.conf import settings
 from django.core.management import call_command
