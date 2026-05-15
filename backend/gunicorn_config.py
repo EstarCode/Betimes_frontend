@@ -1,6 +1,6 @@
-"""
+﻿"""
 Production Gunicorn Configuration
-Optimized for 100,000+ concurrent users
+Optimized for managed deployment stability on Render.
 """
 import multiprocessing
 import os
@@ -9,17 +9,15 @@ import os
 bind = f"0.0.0.0:{os.getenv('PORT', '8000')}"
 backlog = 2048
 
-# Worker processes - optimized for high concurrency
+# Worker processes
 workers = int(os.getenv('WEB_CONCURRENCY', multiprocessing.cpu_count() * 2 + 1))
-worker_class = 'gthread'  # Use threaded workers for better concurrency
-threads = 4  # 4 threads per worker
+worker_class = 'gthread'
+threads = 2
 worker_connections = 1000
-max_requests = 10000  # Restart workers after 10k requests to prevent memory leaks
-max_requests_jitter = 1000
+max_requests = 1000
+max_requests_jitter = 50
 timeout = 120
 keepalive = 5
-
-# Graceful timeout
 graceful_timeout = 30
 
 # Logging
@@ -39,43 +37,44 @@ user = None
 group = None
 tmp_upload_dir = None
 
-# Security
+# Security limits
 limit_request_line = 4094
 limit_request_fields = 100
 limit_request_field_size = 8190
 
-# Preload app for better performance and memory sharing
-preload_app = True
+# Safer startup on PaaS: avoid preload import-time crash bringing down master
+preload_app = False
 
-# Server hooks
+
 def on_starting(server):
-    """Called just before the master process is initialized."""
-    server.log.info("🚀 Starting Betimes API Server")
+    server.log.info('Starting Betimes API Server')
+
 
 def when_ready(server):
-    """Called just after the server is started."""
-    server.log.info(f"✅ Server ready with {workers} workers x {threads} threads = {workers * threads} total threads")
+    server.log.info(
+        f'Server ready with {workers} workers x {threads} threads = {workers * threads} total threads'
+    )
+
 
 def worker_int(worker):
-    """Called when a worker receives SIGINT or SIGQUIT."""
-    worker.log.info(f"⚠️  Worker {worker.pid} received interrupt signal")
+    worker.log.info(f'Worker {worker.pid} received interrupt signal')
+
 
 def worker_abort(worker):
-    """Called when a worker receives SIGABRT."""
-    worker.log.error(f"❌ Worker {worker.pid} aborted")
+    worker.log.error(f'Worker {worker.pid} aborted')
+
 
 def post_fork(server, worker):
-    """Called after a worker has been forked."""
-    server.log.info(f"✅ Worker {worker.pid} spawned")
+    server.log.info(f'Worker {worker.pid} spawned')
+
 
 def pre_fork(server, worker):
-    """Called before a worker is forked."""
     pass
 
+
 def pre_exec(server):
-    """Called before a new master process is forked."""
-    server.log.info("🔄 Forking new master process")
+    server.log.info('Forking new master process')
+
 
 def on_exit(server):
-    """Called just before the master process exits."""
-    server.log.info("👋 Server shutting down")
+    server.log.info('Server shutting down')
