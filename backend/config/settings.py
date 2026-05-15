@@ -99,9 +99,26 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
-DATABASES = {
-    'default': env.db('DATABASE_URL', default='sqlite:///db.sqlite3')
-}
+# Use dj-database-url for better PostgreSQL URL parsing
+import dj_database_url
+
+if env('DATABASE_URL', default=None):
+    # Production: Use DATABASE_URL from environment
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=env('DATABASE_URL'),
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+    }
+else:
+    # Development: Use SQLite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -173,7 +190,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20,
     'DEFAULT_THROTTLE_CLASSES': [],  # No rate limiting for free usage
     'DEFAULT_THROTTLE_RATES': {},
-    'EXCEPTION_HANDLER': 'config.exceptions.custom_exception_handler',
+    'EXCEPTION_HANDLER': 'config.error_handlers.custom_exception_handler',
 }
 
 if TESTING:
