@@ -97,24 +97,30 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
-
 # Database
-# Use dj-database-url for better PostgreSQL URL parsing
+# Optimized for high concurrency with connection pooling
 import dj_database_url
 
 DATABASE_URL = env('DATABASE_URL', default='')
 
 if DATABASE_URL and DATABASE_URL.strip():
-    # Production: Use DATABASE_URL from environment
+    # Production: PostgreSQL with connection pooling
     DATABASES = {
         'default': dj_database_url.parse(
             DATABASE_URL,
-            conn_max_age=600,
+            conn_max_age=600,  # Keep connections alive for 10 minutes
             conn_health_checks=True,
         )
     }
+    # Connection pool settings for high concurrency
+    DATABASES['default']['OPTIONS'] = {
+        'connect_timeout': 10,
+        'options': '-c statement_timeout=30000',  # 30 second query timeout
+    }
+    DATABASES['default']['CONN_MAX_AGE'] = 600
+    DATABASES['default']['ATOMIC_REQUESTS'] = False  # Better performance
 else:
-    # Development: Use SQLite
+    # Development: SQLite
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -267,6 +273,7 @@ CELERY_TASK_TIME_LIMIT = 30 * 60  # 30 minutes
 REDIS_URL = env('REDIS_URL', default='')
 USE_REDIS_CACHE = env.bool('USE_REDIS_CACHE', default=bool(REDIS_URL))
 
+# Redis Cache Configuration - Optimized for 100k+ users
 if TESTING or not USE_REDIS_CACHE:
     CACHES = {
         'default': {
@@ -281,9 +288,25 @@ else:
             'LOCATION': REDIS_URL,
             'OPTIONS': {
                 'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            }
+                'CONNECTION_POOL_KWARGS': {
+                    'max_connections': 50,  # Connection pool for high concurrency
+                    'retry_on_timeout': True,
+                },
+                'SOCKET_CONNECT_TIMEOUT': 5,
+                'SOCKET_TIMEOUT': 5,
+                'COMPRESSOR': 'django_redis.compressors.zlib.ZlibCompressor',  # Compress cached data
+                'IGNORE_EXCEPTIONS': True,  # Don't fail if Redis is down
+            },
+            'KEY_PREFIX': 'betimes',
+            'TIMEOUT': 300,  # 5 minutes default
         }
     }
+
+# Session configuration - use Redis for scalability
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default'
+SESSION_COOKIE_AGE = 86400  # 24 hours
+SESSION_SAVE_EVERY_REQUEST = False  # Better performance
 
 # File Upload Settings (Unlimited for enterprise use)
 MAX_UPLOAD_SIZE = env.int('MAX_UPLOAD_SIZE', default=10737418240)  # 10GB default
