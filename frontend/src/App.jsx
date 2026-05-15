@@ -38,19 +38,11 @@ function App() {
         />
         <Route
           path="compress"
-          element={
-            <PrivateRoute>
-              <Compress />
-            </PrivateRoute>
-          }
+          element={<Compress />}
         />
         <Route
           path="convert"
-          element={
-            <PrivateRoute>
-              <Convert />
-            </PrivateRoute>
-          }
+          element={<Convert />}
         />
         <Route
           path="pdf-tools"
@@ -59,6 +51,30 @@ function App() {
               <PDFTools />
             </PrivateRoute>
           }
+        />
+        <Route
+          path="pdf-tools/merge"
+          element={<PDFTools />}
+        />
+        <Route
+          path="pdf-tools/split"
+          element={<PDFTools />}
+        />
+        <Route
+          path="pdf-tools/protect"
+          element={<PDFTools />}
+        />
+        <Route
+          path="pdf-tools/unlock"
+          element={<PDFTools />}
+        />
+        <Route
+          path="pdf-tools/watermark"
+          element={<PDFTools />}
+        />
+        <Route
+          path="pdf-tools/organize"
+          element={<PDFTools />}
         />
         <Route
           path="workflows"

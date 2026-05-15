@@ -30,7 +30,7 @@ const startTokenRefresh = () => {
     const refreshToken = localStorage.getItem('refreshToken')
     if (refreshToken) {
       try {
-        const response = await axios.post(`${API_URL}/auth/token/refresh/`, {
+        const response = await axios.post(`${API_URL}/v1/auth/token/refresh/`, {
           refresh: refreshToken,
         })
         const { access } = response.data

@@ -1,22 +1,22 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { FiMenu, FiX, FiUser, FiLogOut, FiScissors, FiLayers, FiLock, FiUnlock, FiDroplet, FiGrid, FiFileText, FiTrendingUp, FiChevronDown } from 'react-icons/fi'
 import { motion, AnimatePresence } from 'framer-motion'
+import { logout } from '../../store/slices/authSlice'
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [pdfToolsOpen, setPdfToolsOpen] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
+  const dispatch = useDispatch()
   
-  // Check if user is logged in
-  const isAuthenticated = localStorage.getItem('token')
-  const user = JSON.parse(localStorage.getItem('user') || '{}')
+  // Get authentication state from Redux
+  const { isAuthenticated, user } = useSelector((state) => state.auth)
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('refreshToken')
-    localStorage.removeItem('user')
+    dispatch(logout())
     navigate('/login')
   }
 

@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { motion } from 'framer-motion'
 import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { guestAccess } from '../utils/guestAccess'
+import { loginSuccess } from '../store/slices/authSlice'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
 
@@ -16,6 +18,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const handleChange = (e) => {
     setFormData({
@@ -34,9 +37,14 @@ const Login = () => {
         password: formData.password
       })
 
-      // Store tokens and user data
-      localStorage.setItem('token', response.data.data.access)
-      localStorage.setItem('refreshToken', response.data.data.refresh)
+      // Dispatch Redux action to update auth state
+      dispatch(loginSuccess({
+        user: response.data.data.user,
+        access: response.data.data.access,
+        refresh: response.data.data.refresh
+      }))
+
+      // Store user data in localStorage
       localStorage.setItem('user', JSON.stringify(response.data.data.user))
 
       // Reset guest count after login
