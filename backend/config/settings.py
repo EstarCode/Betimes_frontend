@@ -345,9 +345,21 @@ if not DEBUG and not IS_TEST_ENV:
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
     'formatters': {
         'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
             'style': '{',
         },
     },
@@ -363,18 +375,33 @@ LOGGING = {
         },
     },
     'root': {
-        'handlers': ['console', 'file'],
+        'handlers': ['console'],
         'level': 'INFO',
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'file'],
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'WARNING',  # Reduce database query logging
+            'propagate': False,
+        },
+        'django.utils.autoreload': {
+            'handlers': ['console'],
+            'level': 'WARNING',  # Reduce autoreload warnings
+            'propagate': False,
+        },
         'apps': {
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'celery': {
+            'handlers': ['console'],
+            'level': 'INFO',
             'propagate': False,
         },
     },
@@ -382,3 +409,9 @@ LOGGING = {
 
 # Create logs directory if it doesn't exist
 os.makedirs(os.path.join(BASE_DIR, 'logs'), exist_ok=True)
+
+# Suppress specific warnings in production
+if not DEBUG:
+    import warnings
+    warnings.filterwarnings('ignore', message='.*Engine not recognized from url.*')
+    warnings.filterwarnings('ignore', message='.*DateTimeField.*received a naive datetime.*')
