@@ -13,9 +13,9 @@ pip install wheel setuptools
 echo "📦 Installing Python dependencies..."
 pip install -r requirements.txt
 
-# Run production readiness checks
+# Run production readiness checks (don't fail build if checks fail)
 echo "🔍 Running production readiness checks..."
-python production-checklist.py || echo "⚠️  Some checks failed, but continuing..."
+python production-checklist.py || echo "⚠️  Some checks failed, but continuing with deployment..."
 
 # Collect static files
 echo "📁 Collecting static files..."
@@ -23,6 +23,6 @@ python manage.py collectstatic --no-input
 
 # Run database migrations
 echo "🗄️  Running database migrations..."
-python manage.py migrate
+python manage.py migrate --no-input
 
 echo "✅ Build completed successfully!"

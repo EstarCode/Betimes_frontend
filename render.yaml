@@ -1,13 +1,13 @@
-services:
+databases:
   # PostgreSQL Database
-  - type: pserv
-    name: betimes-postgres
-    env: docker
+  - name: betimes-postgres
+    databaseName: betimes_db
+    user: betimes_user
     region: oregon
     plan: starter
     ipAllowList: []
-    
-  # Redis Cache
+
+services:
   - type: redis
     name: betimes-redis
     region: oregon
@@ -21,7 +21,7 @@ services:
     region: oregon
     rootDir: backend
     buildCommand: chmod +x render-build.sh && ./render-build.sh
-    startCommand: gunicorn config.wsgi:application --config gunicorn.conf.py
+    startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120 --log-level info
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0

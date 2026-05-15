@@ -102,11 +102,13 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Use dj-database-url for better PostgreSQL URL parsing
 import dj_database_url
 
-if env('DATABASE_URL', default=None):
+DATABASE_URL = env('DATABASE_URL', default='')
+
+if DATABASE_URL and DATABASE_URL.strip():
     # Production: Use DATABASE_URL from environment
     DATABASES = {
-        'default': dj_database_url.config(
-            default=env('DATABASE_URL'),
+        'default': dj_database_url.parse(
+            DATABASE_URL,
             conn_max_age=600,
             conn_health_checks=True,
         )
