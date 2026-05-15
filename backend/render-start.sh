@@ -30,4 +30,4 @@ echo "Importing WSGI application..."
 python -c "import config.wsgi" 
 
 echo "Starting Gunicorn..."
-exec gunicorn config.wsgi:application -c gunicorn_config.py
+exec gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
