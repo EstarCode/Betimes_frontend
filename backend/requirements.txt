@@ -54,4 +54,6 @@ gunicorn==21.2.0
 python-dateutil==2.9.0
 pytz==2024.1
 requests==2.31.0
-setuptools>=65.0.0
+# drf-yasg imports pkg_resources, which is no longer bundled in newest setuptools.
+# Keep setuptools in a compatible range for deterministic deploys.
+setuptools>=65.0.0,<81
