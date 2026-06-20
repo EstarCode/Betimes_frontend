@@ -1,4 +1,0 @@
-poppler-utils
-tesseract-ocr
-ghostscript
-libmupdf-dev
