@@ -1,4 +1,4 @@
-# Betimes - Professional Document Processing Platform
+# Betimes
 
 > Modern, scalable document management and processing system built with Django and React
 
@@ -14,12 +14,6 @@
 ## 🚀 Overview
 
 **Betimes** is a production-ready document processing platform designed for modern web applications. Built with Django REST Framework and React, it provides comprehensive document management, conversion, and workflow automation capabilities with a focus on performance, security, and user experience.
-
-### 🌐 Live Demo
-
-- **API**: https://betimes.onrender.com/api
-- **Documentation**: https://betimes.onrender.com/api/docs/
-- **Health Check**: https://betimes.onrender.com/health/
 
 ### ✨ Key Features
 
